@@ -1,8 +1,6 @@
 package simulation.map.pathfinding;
 
 import simulation.entity.Entity;
-import simulation.entity.creature.Creature;
-import simulation.entity.creature.animal.Herbivore;
 import simulation.map.GameMap;
 import simulation.map.Position;
 

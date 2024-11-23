@@ -63,5 +63,8 @@ public class Main {
         //=========================================================================
 
         gameMap.displayMap();
+
+        predator.searchTarget(gameMap);
+        herbivore1.searchTarget(gameMap);
     }
 }
