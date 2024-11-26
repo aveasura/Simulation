@@ -7,11 +7,22 @@ import simulation.map.GameMap;
 import simulation.map.Position;
 import simulation.map.pathfinding.BFS;
 
+import java.util.List;
+
 // Стремятся найти ресурс (траву), может потратить свой ход на движение в сторону травы, либо на её поглощение
 public class Herbivore extends Creature {
 
     public Herbivore(int hp, int speed, Position position) {
         super(hp, speed, position);
+    }
+
+    public void searchTarget(GameMap gameMap) {
+        Position currentPosition = this.getPosition();
+        BFS bfs = new BFS(gameMap);
+
+        List<Position> target = bfs.bfs(currentPosition, Grass.class);
+        if (target != null) System.out.println("Цель \"Grass\" + найдена: " + target);
+        else System.out.println("Цель не найдена!");
     }
 
     @Override
@@ -23,14 +34,5 @@ public class Herbivore extends Creature {
     @Override
     public char getSymbol() {
         return 'H';
-    }
-
-    public void searchTarget(GameMap gameMap) {
-        Position currentPosition = this.getPosition();
-        BFS bfs = new BFS(gameMap);
-
-        Entity target = bfs.bfs(currentPosition, Grass.class);
-        if (target != null) System.out.println("Цель найдена: " + target.getPosition());
-        else System.out.println("Цель не найдена!");
     }
 }

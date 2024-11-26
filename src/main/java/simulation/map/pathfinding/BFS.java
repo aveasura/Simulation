@@ -15,8 +15,8 @@ public class BFS {
         this.gameMap = gameMap;
     }
 
-    public Entity bfs (Position start, Class<? extends Entity> targetClass) {
-//        visitedCells.clear();
+    public List<Position> bfs(Position start, Class<? extends Entity> targetClass) {
+        Map<Position, Position> parentMap = new HashMap<>();
 
         Queue<Position> queue = new LinkedList<>();
         Set<Position> visited = new HashSet<>();
@@ -30,19 +30,33 @@ public class BFS {
 
             Entity entity = gameMap.getEntityAt(current);
             if (entity != null && targetClass.isInstance(entity)) {
-                return entity;
+                return reconstructPath(parentMap, entity);
             }
-
-//            visitedCells.add(current);
 
             for (Position neighbor : nf.getNeighbors(current)) {
                 if (!visited.contains(neighbor)) {
                     visited.add(neighbor);
                     queue.offer(neighbor);
+                    parentMap.put(neighbor, current);
                 }
             }
         }
 
         return null;
+    }
+
+    // Метод для воспроизведения пути
+    public List<Position> reconstructPath(Map<Position, Position> map, Entity entity) {
+        List<Position> path = new ArrayList<>();
+        Position currentKey = entity.getPosition();
+
+        while (map.containsKey(currentKey)) {
+            path.add(0, currentKey);
+            currentKey = map.get(currentKey);
+        }
+
+        path.add(0, currentKey);
+
+        return path;
     }
 }

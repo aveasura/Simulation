@@ -6,6 +6,8 @@ import simulation.map.GameMap;
 import simulation.map.Position;
 import simulation.map.pathfinding.BFS;
 
+import java.util.List;
+
 // На что может потратить ход хищник:
 // Переместиться (чтобы приблизиться к жертве - травоядному)
 // Атаковать травоядное. При этом количество HP травоядного уменьшается на силу атаки хищника.
@@ -19,20 +21,20 @@ public class Predator extends Creature {
         this.attackPower = attackPower;
     }
 
+    public void searchTarget(GameMap gameMap) {
+        Position currentPosition = this.getPosition();
+        BFS bfs = new BFS(gameMap);
+        List<Position> target = bfs.bfs(currentPosition, Herbivore.class);
+
+        if (target != null) {
+            System.out.println("Цель \"Herbivore\" найдена: " + target);
+        } else System.out.println("Цель не найдена!");
+    }
+
     @Override
     protected void makeMove() {
         // todo логика хода
         System.out.println("predator move");
-    }
-
-    public void searchTarget(GameMap gameMap) {
-        Position currentPosition = this.getPosition();
-        BFS bfs = new BFS(gameMap);
-        Entity target = bfs.bfs(currentPosition, Herbivore.class);
-
-        if (target != null) {
-            System.out.println("Цель найдена: " + target.getPosition());
-        } else System.out.println("Цель не найдена!");
     }
 
     public void attack() {

@@ -15,7 +15,7 @@ public class Main {
         GameMap gameMap = new GameMap(10, 10);
 
         // Predators
-        Position predatorPos = new Position(1,1);
+        Position predatorPos = new Position(3,4);
         Predator predator = new Predator(1,1,1, predatorPos);
         //=========================================================================
 
