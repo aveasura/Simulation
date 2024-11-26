@@ -1,6 +1,5 @@
 package simulation.entity.creature.animal;
 
-import simulation.entity.Entity;
 import simulation.entity.creature.Creature;
 import simulation.entity.resource.Grass;
 import simulation.map.GameMap;
@@ -17,17 +16,22 @@ public class Herbivore extends Creature {
     }
 
     public void searchTarget(GameMap gameMap) {
+
+        if (!this.isExist()) {
+            System.out.println("Травоядное мертво: " + getPosition());
+            return;
+        }
+
         Position currentPosition = this.getPosition();
         BFS bfs = new BFS(gameMap);
 
         List<Position> target = bfs.bfs(currentPosition, Grass.class);
-        if (target != null) System.out.println("Цель \"Grass\" + найдена: " + target);
+        if (target != null) System.out.println("Herbivore: Цель \"Grass\" найдена. Маршрут: " + target);
         else System.out.println("Цель не найдена!");
     }
 
     @Override
-    public void makeMove() {
-        // todo логика хода
+    protected void makeMove(Position currentPosition, GameMap gameMap) {
         System.out.println("herbivore move");
     }
 

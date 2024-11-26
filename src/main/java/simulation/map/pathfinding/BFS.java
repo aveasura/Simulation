@@ -7,8 +7,6 @@ import simulation.map.Position;
 import java.util.*;
 
 public class BFS {
-//    private List<Position> visitedCells = new ArrayList<>(); // посещенные клетки [для отслеживания пути]
-
     private final GameMap gameMap;
 
     public BFS(GameMap gameMap) {
@@ -45,7 +43,6 @@ public class BFS {
         return null;
     }
 
-    // Метод для воспроизведения пути
     public List<Position> reconstructPath(Map<Position, Position> map, Entity entity) {
         List<Position> path = new ArrayList<>();
         Position currentKey = entity.getPosition();

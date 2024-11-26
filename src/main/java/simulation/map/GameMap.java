@@ -1,6 +1,9 @@
 package simulation.map;
 
 import simulation.entity.Entity;
+import simulation.entity.creature.Creature;
+import simulation.entity.creature.animal.Herbivore;
+import simulation.entity.creature.animal.Predator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,14 +60,33 @@ public class GameMap {
         return map.containsKey(position);
     }
 
-    public void move(Position from, Position to) {
+    public void move(Class<? extends Creature> creature, Position from, Position to) {
         if (isOutOfBound(to)) throw new IllegalArgumentException("Invalid position: " + to);
-        if (isOccupied(to)) throw new IllegalArgumentException("Position already occupied: " + to);
+//        if (isOccupied(to)) throw new IllegalArgumentException("Position already occupied: " + to);
         if (!map.containsKey(from)) throw new IllegalArgumentException("No entity at position: " + from);
 
-        Entity entity = map.remove(from); // Убираем сущность с текущей позиции
-        map.put(to, entity);    // Перемещаем сущность на новую позицию
-        entity.setPosition(to); // Обновляем позицию у сущности
+        Entity entity = map.get(from);
+        if (isOccupied(to)) {
+            if (entity instanceof Predator predator) {
+                Entity target = map.get(to);
+                if (target != null && target instanceof Herbivore) {
+                    predator.attack((Herbivore) target);
+                    if (((Herbivore) target).getHp() == 0) {
+                        System.out.println("Predator killing Herbivore!!");
+                        target.setExist(false);
+                        map.remove(to);
+                    } else {
+                        System.out.println("Цель пока жива");
+                    }
+                }
+            }
+
+        } else {
+
+            entity = map.remove(from); // Убираем сущность с текущей позиции
+            map.put(to, entity);    // Перемещаем сущность на новую позицию
+            entity.setPosition(to); // Обновляем позицию у сущности
+        }
     }
 
     public int getWidth() {

@@ -12,6 +12,8 @@ import simulation.map.Position;
 public class Main {
     public static void main(String[] args) {
 
+        // tmp main
+
         GameMap gameMap = new GameMap(10, 10);
 
         // Predators
@@ -21,7 +23,7 @@ public class Main {
 
         // Herbivores
         Position herbivorePos1 = new Position(8, 5);
-        Herbivore herbivore1 = new Herbivore(1,1, herbivorePos1);
+        Herbivore herbivore1 = new Herbivore(3,1, herbivorePos1);
         //=========================================================================
 
         // Tree
@@ -65,6 +67,34 @@ public class Main {
         gameMap.displayMap();
 
         predator.searchTarget(gameMap);
+        gameMap.displayMap();
+
+        predator.searchTarget(gameMap);
+        gameMap.displayMap();
+
+        predator.searchTarget(gameMap);
+        gameMap.displayMap();
+
+        predator.searchTarget(gameMap);
+        gameMap.displayMap();
+
+        predator.searchTarget(gameMap);
+        gameMap.displayMap();
+
+        predator.searchTarget(gameMap);
+        gameMap.displayMap();
+
+        predator.searchTarget(gameMap);
+        gameMap.displayMap();
+
+        predator.searchTarget(gameMap);
         herbivore1.searchTarget(gameMap);
+
+        gameMap.displayMap();
+
+        herbivore1.searchTarget(gameMap);
+        gameMap.showMap();
+
+
     }
 }

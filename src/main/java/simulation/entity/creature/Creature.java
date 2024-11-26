@@ -1,10 +1,11 @@
 package simulation.entity.creature;
 
 import simulation.entity.Entity;
+import simulation.map.GameMap;
 import simulation.map.Position;
 
 public abstract class Creature extends Entity {
-    private int speed;
+    private final int speed;
     private int hp;
 
     public Creature(int hp, int speed, Position position) {
@@ -13,7 +14,7 @@ public abstract class Creature extends Entity {
         this.speed = speed;
     }
 
-    abstract protected void makeMove();
+    abstract protected void makeMove(Position currentPosition, GameMap gameMap);
 
     @Override
     public String toString() {
@@ -21,5 +22,17 @@ public abstract class Creature extends Entity {
                 "speed=" + speed +
                 ", hp=" + hp +
                 '}';
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
     }
 }
