@@ -1,7 +1,7 @@
 package simulation.entity.creature;
 
+import simulation.controller.MovementController;
 import simulation.entity.Entity;
-import simulation.map.GameMap;
 import simulation.map.Position;
 
 public abstract class Creature extends Entity {
@@ -14,7 +14,7 @@ public abstract class Creature extends Entity {
         this.speed = speed;
     }
 
-    abstract protected void makeMove(Position currentPosition, GameMap gameMap);
+    abstract protected void makeMove(MovementController movementController);
 
     @Override
     public String toString() {

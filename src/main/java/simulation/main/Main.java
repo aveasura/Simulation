@@ -1,5 +1,6 @@
 package simulation.main;
 
+import simulation.controller.MovementController;
 import simulation.entity.Entity;
 import simulation.entity.creature.animal.Herbivore;
 import simulation.entity.creature.animal.Predator;
@@ -15,6 +16,7 @@ public class Main {
         // tmp main
 
         GameMap gameMap = new GameMap(10, 10);
+        MovementController movementController = new MovementController(gameMap);
 
         // Predators
         Position predatorPos = new Position(3,4);
@@ -27,15 +29,13 @@ public class Main {
         //=========================================================================
 
         // Tree
-        Position treePos = new Position(3, 6);
+        Position treePos = new Position(4, 6);
         Tree tree = new Tree(treePos);
         //=========================================================================
 
         // Grass
-        Position grassPos1 = new Position(4, 9);
-        Position grassPos2 = new Position(8, 1);
+        Position grassPos1 = new Position(0, 9);
         Grass grass1 = new Grass(grassPos1);
-        Grass grass2 = new Grass(grassPos2);
         //=========================================================================
 
         // Rock
@@ -50,51 +50,31 @@ public class Main {
         //=========================================================================
 
         // Spawner
-        gameMap.spawn(predatorPos, predator);
-        gameMap.spawn(herbivorePos1, herbivore1);
+        gameMap.addEntity(predatorPos, predator);
+        gameMap.addEntity(herbivorePos1, herbivore1);
 
-        gameMap.spawn(treePos, tree);
+        gameMap.addEntity(treePos, tree);
 
-        gameMap.spawn(rockPos1, rock1);
-        gameMap.spawn(rockPos2, rock2);
+        gameMap.addEntity(rockPos1, rock1);
+        gameMap.addEntity(rockPos2, rock2);
 
-        gameMap.spawn(grassPos1, grass1);
-        gameMap.spawn(grassPos2, grass2);
+        gameMap.addEntity(grassPos1, grass1);
 
-        gameMap.spawn(rockPos3, rock3);
+        gameMap.addEntity(rockPos3, rock3);
         //=========================================================================
 
+
+
+        // test
         gameMap.displayMap();
+        for (int i = 0; i < 15 ; i++) {
+            predator.searchTarget(movementController);
+            herbivore1.searchTarget(movementController);
+            gameMap.displayMap();
+        }
 
-        predator.searchTarget(gameMap);
-        gameMap.displayMap();
-
-        predator.searchTarget(gameMap);
-        gameMap.displayMap();
-
-        predator.searchTarget(gameMap);
-        gameMap.displayMap();
-
-        predator.searchTarget(gameMap);
-        gameMap.displayMap();
-
-        predator.searchTarget(gameMap);
-        gameMap.displayMap();
-
-        predator.searchTarget(gameMap);
-        gameMap.displayMap();
-
-        predator.searchTarget(gameMap);
-        gameMap.displayMap();
-
-        predator.searchTarget(gameMap);
-        herbivore1.searchTarget(gameMap);
-
-        gameMap.displayMap();
-
-        herbivore1.searchTarget(gameMap);
-        gameMap.showMap();
-
+        predator.searchTarget(movementController);
+        herbivore1.searchTarget(movementController);
 
     }
 }

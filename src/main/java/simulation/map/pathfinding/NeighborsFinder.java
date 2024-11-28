@@ -1,5 +1,9 @@
 package simulation.map.pathfinding;
 
+import simulation.entity.Entity;
+import simulation.entity.creature.animal.Herbivore;
+import simulation.entity.creature.animal.Predator;
+import simulation.entity.resource.Grass;
 import simulation.map.GameMap;
 import simulation.map.Position;
 
@@ -13,11 +17,11 @@ public class NeighborsFinder {
         this.gameMap = gameMap;
     }
 
-    List<Position> getNeighbors(Position position) {
-        return findNeighbors(position);
+    List<Position> getNeighbors(Position position, Entity entity) {
+        return findNeighbors(position, entity);
     }
 
-    private List<Position> findNeighbors(Position current) {
+    private List<Position> findNeighbors(Position current, Entity entity) {
         List<Position> neighbors = new ArrayList<>();
 
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
@@ -29,8 +33,25 @@ public class NeighborsFinder {
             int newX = x + direction[0];
             int newY = y + direction[1];
 
+            Position newPosition = new Position(newX, newY);
+            Entity neighborEntity = gameMap.getGrid().get(newPosition);
+
             if (isValid(newX, newY)) {
-                neighbors.add(new Position(newX, newY));
+
+                // Если это травоядное, и соседняя клетка содержит траву
+                if (entity instanceof Herbivore && neighborEntity instanceof Grass) {
+                    neighbors.add(newPosition);
+                }
+
+                // Если это хищник, и соседняя клетка содержит травоядное
+                else if (entity instanceof Predator && neighborEntity instanceof Herbivore) {
+                    neighbors.add(newPosition);
+                }
+
+                // Если на клетке нет сущности, добавляем её в список соседей
+                else if (neighborEntity == null) {
+                    neighbors.add(newPosition);
+                }
             }
         }
 
@@ -38,6 +59,6 @@ public class NeighborsFinder {
     }
 
     public boolean isValid(int x, int y) {
-        return x >= 0 && x <= gameMap.getWidth() && y >= 0 && y <= gameMap.getHeight();
+        return (x >= 0 && x < gameMap.getWidth() && y >= 0 && y < gameMap.getHeight());
     }
 }

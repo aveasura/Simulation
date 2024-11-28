@@ -23,15 +23,18 @@ public class BFS {
         visited.add(start);
 
         NeighborsFinder nf = new NeighborsFinder(gameMap);
+        Entity startEntity = gameMap.getEntityAt(start);
+
         while (!queue.isEmpty()) {
             Position current = queue.poll();
 
             Entity entity = gameMap.getEntityAt(current);
+
             if (entity != null && targetClass.isInstance(entity)) {
-                return reconstructPath(parentMap, entity);
+                return reconstructPath(parentMap, current);
             }
 
-            for (Position neighbor : nf.getNeighbors(current)) {
+            for (Position neighbor : nf.getNeighbors(current, startEntity)) {
                 if (!visited.contains(neighbor)) {
                     visited.add(neighbor);
                     queue.offer(neighbor);
@@ -43,9 +46,9 @@ public class BFS {
         return null;
     }
 
-    public List<Position> reconstructPath(Map<Position, Position> map, Entity entity) {
+    public List<Position> reconstructPath(Map<Position, Position> map, Position end) {
         List<Position> path = new ArrayList<>();
-        Position currentKey = entity.getPosition();
+        Position currentKey = end;
 
         while (map.containsKey(currentKey)) {
             path.add(0, currentKey);
