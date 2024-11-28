@@ -9,7 +9,6 @@ import simulation.map.pathfinding.BFS;
 
 import java.util.List;
 
-// Стремятся найти ресурс (траву), может потратить свой ход на движение в сторону травы, либо на её поглощение
 public class Herbivore extends Creature {
     public Herbivore(int hp, int speed, Position position) {
         super(hp, speed, position);
@@ -22,7 +21,7 @@ public class Herbivore extends Creature {
 
         List<Position> path = bfs.bfs(currentPosition, Grass.class);
 
-        if (!this.isExist()) {
+        if (!this.isAlive()) {
             System.out.println("Травоядное мертво: " + getPosition());
             return null;
         }
@@ -35,6 +34,15 @@ public class Herbivore extends Creature {
             System.out.println("Цель не найдена!");
             return null;
         }
+    }
+
+    public boolean eatGrass(Grass grass) {
+        grass.setExist(false);
+        return grass.isExist();
+    }
+
+    public boolean isAlive() {
+        return getHp() > 0;
     }
 
     @Override

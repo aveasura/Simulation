@@ -25,8 +25,9 @@ public abstract class Creature extends Entity {
         int speed = this.getSpeed();
         int nextPositionIndex = Math.min(speed, path.size() - 1);
         Position nextPosition = path.get(nextPositionIndex);
+        Entity target = movementController.getGameMap().getEntityAt(path.get(path.size() - 1));
 
-        movementController.moveEntity(this, nextPosition);
+        movementController.moveEntity(this, nextPosition, target);
     }
 
     @Override
