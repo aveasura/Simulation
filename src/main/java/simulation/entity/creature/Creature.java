@@ -4,6 +4,8 @@ import simulation.controller.MovementController;
 import simulation.entity.Entity;
 import simulation.map.Position;
 
+import java.util.List;
+
 public abstract class Creature extends Entity {
     private final int speed;
     private int hp;
@@ -14,7 +16,18 @@ public abstract class Creature extends Entity {
         this.speed = speed;
     }
 
-    abstract protected void makeMove(MovementController movementController);
+    public void makeMove(List<Position> path, MovementController movementController) {
+        if (path == null || path.isEmpty()) {
+            System.out.println("Нет пути для перемещения.");
+            return;
+        }
+
+        int speed = this.getSpeed();
+        int nextPositionIndex = Math.min(speed, path.size() - 1);
+        Position nextPosition = path.get(nextPositionIndex);
+
+        movementController.moveEntity(this, nextPosition);
+    }
 
     @Override
     public String toString() {

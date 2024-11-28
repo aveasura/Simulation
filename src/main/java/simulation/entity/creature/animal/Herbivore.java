@@ -11,47 +11,30 @@ import java.util.List;
 
 // Стремятся найти ресурс (траву), может потратить свой ход на движение в сторону травы, либо на её поглощение
 public class Herbivore extends Creature {
-    private List<Position> path;
-
     public Herbivore(int hp, int speed, Position position) {
         super(hp, speed, position);
     }
 
-    public void searchTarget(MovementController movementController) {
+    public List<Position> searchTarget(MovementController movementController) {
         Position currentPosition = this.getPosition();
         GameMap map = movementController.getGameMap();
         BFS bfs = new BFS(map);
 
-        path = bfs.bfs(currentPosition, Grass.class);
+        List<Position> path = bfs.bfs(currentPosition, Grass.class);
+
         if (!this.isExist()) {
             System.out.println("Травоядное мертво: " + getPosition());
-            return;
+            return null;
         }
 
         if (path != null && !path.isEmpty()) {
             System.out.println("Herbivore: Цель \"Grass\" найдена. Маршрут: " + path);
-
-            this.makeMove(movementController);
+            return path;
 
         } else {
             System.out.println("Цель не найдена!");
+            return null;
         }
-    }
-
-    protected void makeMove(MovementController movementController) {
-
-        if (path == null || path.isEmpty()) {
-            System.out.println("Нет пути для перемещения.");
-            return;
-        }
-
-        int herbivoreSpeed = this.getSpeed();
-        int nextPositionIndex = Math.min(herbivoreSpeed, path.size() - 1);
-        Position nextPosition = path.get(nextPositionIndex);
-
-        System.out.println("Herbivore перемещается на: " + nextPosition);
-
-        movementController.moveEntity(this, nextPosition);
     }
 
     @Override
