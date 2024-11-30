@@ -6,6 +6,7 @@ import simulation.map.GameMap;
 import simulation.map.Position;
 import simulation.map.pathfinding.BFS;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Predator extends Creature {
@@ -22,19 +23,20 @@ public class Predator extends Creature {
         BFS bfs = new BFS(map);
         List<Position> path = bfs.bfs(currentPosition, Herbivore.class);
 
-        if (path != null) {
-            System.out.println("Predator: Цель \"Herbivore\" найдена. Маршрут: " + path);
+        if (path != null && !path.isEmpty()) {
+            System.out.println(this.getSymbol() + ": target \"Herbivore\" found. path: " + path);
             return path;
 
         } else {
-            System.out.println("Цель не найдена!");
-            return null;
+            System.out.println(this.getSymbol() + ": target not found");
+            return Collections.emptyList();
         }
     }
 
     public int attack(Herbivore herbivore) {
         herbivore.setHp(herbivore.getHp() - this.attackPower);
-        System.out.println("HP" + herbivore.getHp());
+
+        System.out.println(this.getSymbol() + ": attacking " + herbivore.getSymbol() + ", current hp is: " + herbivore.getHp());
         return herbivore.getHp();
     }
 

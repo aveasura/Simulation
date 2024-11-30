@@ -7,8 +7,11 @@ import simulation.map.Position;
 import java.util.List;
 
 public abstract class Creature extends Entity {
+    private static final int MIN_PATH_LENGTH = 1;
+
     private final int speed;
     private int hp;
+
 
     public Creature(int hp, int speed, Position position) {
         super(position);
@@ -17,17 +20,17 @@ public abstract class Creature extends Entity {
     }
 
     public void makeMove(List<Position> path, MovementController movementController) {
+        if (!this.isAlive()) return;
+
         if (path == null || path.isEmpty()) {
-            System.out.println("Нет пути для перемещения.");
+            System.out.println(this.getSymbol() + ": no path found to move");
             return;
         }
+        
+        int maxSteps = Math.min(speed, path.size() - MIN_PATH_LENGTH);
+        Position nextPosition = path.get(maxSteps);
 
-        int speed = this.getSpeed();
-        int nextPositionIndex = Math.min(speed, path.size() - 1);
-        Position nextPosition = path.get(nextPositionIndex);
-        Entity target = movementController.getGameMap().getEntityAt(path.get(path.size() - 1));
-
-        movementController.moveEntity(this, nextPosition, target);
+        movementController.moveEntity(this, nextPosition);
     }
 
     @Override
@@ -38,8 +41,8 @@ public abstract class Creature extends Entity {
                 '}';
     }
 
-    public int getSpeed() {
-        return speed;
+    public boolean isAlive() {
+        return getHp() > 0;
     }
 
     public int getHp() {

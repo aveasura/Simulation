@@ -14,27 +14,21 @@ public class BFS {
     }
 
     public List<Position> bfs(Position start, Class<? extends Entity> targetClass) {
-        Map<Position, Position> parentMap = new HashMap<>();
-
         Queue<Position> queue = new LinkedList<>();
         Set<Position> visited = new HashSet<>();
+        Map<Position, Position> parentMap = new HashMap<>();
 
         queue.offer(start);
         visited.add(start);
 
-        NeighborsFinder nf = new NeighborsFinder(gameMap);
-        Entity startEntity = gameMap.getEntityAt(start);
-
         while (!queue.isEmpty()) {
             Position current = queue.poll();
 
-            Entity entity = gameMap.getEntityAt(current);
-
-            if (entity != null && targetClass.isInstance(entity)) {
+            if (isTarget(current, targetClass)) {
                 return reconstructPath(parentMap, current);
             }
 
-            for (Position neighbor : nf.getNeighbors(current, startEntity)) {
+            for (Position neighbor : getValidNeighbors(current, start)) {
                 if (!visited.contains(neighbor)) {
                     visited.add(neighbor);
                     queue.offer(neighbor);
@@ -43,20 +37,31 @@ public class BFS {
             }
         }
 
-        return null;
+        return Collections.emptyList();
     }
 
-    public List<Position> reconstructPath(Map<Position, Position> map, Position end) {
+    private List<Position> getValidNeighbors(Position current, Position start) {
+        NeighborsFinder nf = new NeighborsFinder(gameMap);
+        Entity startEntity = gameMap.getEntityAt(start);
+
+        return nf.getNeighbors(current, startEntity);
+    }
+
+    private boolean isTarget(Position position, Class<? extends Entity> targetClass) {
+        Entity entity = gameMap.getEntityAt(position);
+        return entity != null && targetClass.isInstance(entity);
+    }
+
+    private List<Position> reconstructPath(Map<Position, Position> map, Position end) {
         List<Position> path = new ArrayList<>();
         Position currentKey = end;
 
-        while (map.containsKey(currentKey)) {
-            path.add(0, currentKey);
+        while (currentKey != null) {
+            path.add(currentKey);
             currentKey = map.get(currentKey);
         }
 
-        path.add(0, currentKey);
-
+        Collections.reverse(path);
         return path;
     }
 }

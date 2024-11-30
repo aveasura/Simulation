@@ -7,9 +7,11 @@ import simulation.map.GameMap;
 import simulation.map.Position;
 import simulation.map.pathfinding.BFS;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Herbivore extends Creature {
+
     public Herbivore(int hp, int speed, Position position) {
         super(hp, speed, position);
     }
@@ -18,31 +20,18 @@ public class Herbivore extends Creature {
         Position currentPosition = this.getPosition();
         GameMap map = movementController.getGameMap();
         BFS bfs = new BFS(map);
-
         List<Position> path = bfs.bfs(currentPosition, Grass.class);
 
-        if (!this.isAlive()) {
-            System.out.println("Травоядное мертво: " + getPosition());
-            return null;
+        if (!this.isAlive() || path == null || path.isEmpty()) {
+            return Collections.emptyList();
         }
 
-        if (path != null && !path.isEmpty()) {
-            System.out.println("Herbivore: Цель \"Grass\" найдена. Маршрут: " + path);
-            return path;
-
-        } else {
-            System.out.println("Цель не найдена!");
-            return null;
-        }
+        return path;
     }
 
-    public boolean eatGrass(Grass grass) {
+    public void eatGrass(Grass grass) {
         grass.setExist(false);
-        return grass.isExist();
-    }
-
-    public boolean isAlive() {
-        return getHp() > 0;
+        System.out.println(this.getSymbol() + ": eat grass");
     }
 
     @Override

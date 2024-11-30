@@ -2,6 +2,7 @@ package simulation.map;
 
 import simulation.entity.Entity;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,24 +17,18 @@ public class GameMap {
         this.height = height;
     }
 
-    // Получение сущности по клетке
     public Entity getEntityAt(Position position) {
         return grid.get(position);
     }
 
-    // Добавление сущности на клетку
     public boolean addEntity(Position position, Entity entity) {
-        // Клетка уже занята другим существом
-        if (grid.containsKey(position)) {
-            return false;
-        } else {
-            // Добавляем существо на клетку
+        if (!grid.containsKey(position)) {
             grid.put(position, entity);
             return true;
         }
+        return false;
     }
 
-    // Удаление сущности с клетки
     public void removeEntity(Position position) {
         grid.remove(position);
     }
@@ -41,6 +36,7 @@ public class GameMap {
     public void updateEntityPosition(Entity entity, Position newPosition) {
         grid.remove(entity.getPosition());
         grid.put(newPosition, entity);
+        entity.setPosition(newPosition);
     }
 
     public boolean isValidPosition(Position newPosition) {
@@ -48,19 +44,17 @@ public class GameMap {
                 newPosition.getY() >= 0 && newPosition.getY() < height;
     }
 
-    public boolean isOccupied(Position position) {
-        return grid.containsKey(position);
-    }
-
     public void displayMap() {
-        for (int y = 0; y < width; y++) {
-            for (int x = 0; x < height; x++) {
-                Position position = new Position(x, y);
+        Position position = new Position(0, 0);
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                position.setX(x);
+                position.setY(y);
                 if (grid.containsKey(position)) {
                     Entity entity = grid.get(position);
-                    System.out.print(entity.getSymbol() + "  "); // символ сущности
+                    System.out.print(entity.getSymbol() + "  ");
                 } else {
-                    System.out.print("•  "); // Пустая клетка
+                    System.out.print("•  ");
                 }
             }
             System.out.println();
@@ -76,6 +70,6 @@ public class GameMap {
     }
 
     public Map<Position, Entity> getGrid() {
-        return grid;
+        return Collections.unmodifiableMap(grid);
     }
 }

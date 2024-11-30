@@ -11,7 +11,7 @@ public abstract class Entity {
         this.isExist = true;
     }
 
-    public abstract char getSymbol(); // Символ для отображения
+    public abstract char getSymbol();
 
     public boolean isExist() {
         return isExist;

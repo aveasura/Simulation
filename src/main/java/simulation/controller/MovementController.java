@@ -14,28 +14,32 @@ public class MovementController {
         this.gameMap = gameMap;
     }
 
-    public void moveEntity(Entity entity, Position newPosition, Entity target) {
+    public void moveEntity(Entity entity, Position newPosition) {
+
         if (isValidMove(newPosition)) {
 
             gameMap.updateEntityPosition(entity, newPosition);
-            entity.setPosition(newPosition);
+            System.out.println(entity.getSymbol() + ": is move to " + newPosition);
 
         } else {
+            handleInteraction(entity, newPosition);
+        }
+    }
 
-            if (entity instanceof Herbivore herbivore && newPosition.equals(target.getPosition()) && herbivore.isAlive()) {
-                if (!herbivore.eatGrass((Grass) target)) {
-                    gameMap.removeEntity(newPosition);
-                    System.out.println("Herbivore eat grass");
-                }
-            }
+    private void handleInteraction(Entity entity, Position newPosition) {
+        Entity target = gameMap.getEntityAt(newPosition);
 
-            if (entity instanceof Predator predator && newPosition.equals(target.getPosition())) {
-                int herbivoreHp = predator.attack((Herbivore) target);
+        if (entity instanceof Herbivore herbivore && target instanceof Grass grass && herbivore.isAlive()) {
+            herbivore.eatGrass(grass);
+            gameMap.removeEntity(newPosition);
 
-                if (herbivoreHp < 1) {
-                    gameMap.removeEntity(newPosition);
-                    System.out.println("Predator killed Herbivore");
-                }
+        } else if (entity instanceof Predator predator && target instanceof Herbivore herbivore) {
+            predator.attack(herbivore);
+
+            if (!herbivore.isAlive()) {
+                gameMap.removeEntity(newPosition);
+                System.out.println(predator.getSymbol() + " is killed: " + herbivore.getSymbol());
+                // gameMap.updateEntityPosition(predator, newPosition); // Хищник занимает клетку жертвы после победы
             }
         }
     }
