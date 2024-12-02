@@ -3,23 +3,15 @@ package simulation.entity;
 import simulation.map.Position;
 
 public abstract class Entity {
-    private Position position;
-    private boolean isExist;
+    protected Position position;
+    protected boolean isExist;
 
-    public Entity(Position position) {
-        this.position = position;
+    public Entity(int x, int y) {
+        this.position = new Position(x, y);
         this.isExist = true;
     }
 
     public abstract char getSymbol();
-
-    public boolean isExist() {
-        return isExist;
-    }
-
-    public void setExist(boolean exist) {
-        isExist = exist;
-    }
 
     public Position getPosition() {
         return position;
@@ -28,5 +20,4 @@ public abstract class Entity {
     public void setPosition(Position position) {
         this.position = position;
     }
-
 }

@@ -1,12 +1,11 @@
 package simulation.entity.landscape;
 
 import simulation.entity.Entity;
-import simulation.map.Position;
 
 public class Rock extends Entity {
 
-    public Rock(Position position) {
-        super(position);
+    public Rock(int x, int y) {
+        super(x, y);
     }
 
     @Override

@@ -1,12 +1,11 @@
 package simulation.entity.landscape;
 
 import simulation.entity.Entity;
-import simulation.map.Position;
 
 public class Tree extends Entity {
 
-    public Tree(Position position) {
-        super(position);
+    public Tree(int x, int y) {
+        super(x, y);
     }
 
     @Override

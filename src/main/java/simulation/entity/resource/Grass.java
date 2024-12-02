@@ -1,12 +1,11 @@
 package simulation.entity.resource;
 
 import simulation.entity.Entity;
-import simulation.map.Position;
 
 public class Grass extends Entity {
 
-    public Grass(Position position) {
-        super(position);
+    public Grass(int x, int y) {
+        super(x, y);
     }
 
     @Override

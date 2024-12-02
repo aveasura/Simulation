@@ -1,6 +1,7 @@
 package simulation.controller;
 
 import simulation.entity.Entity;
+import simulation.entity.creature.animal.Attackable;
 import simulation.entity.creature.animal.Herbivore;
 import simulation.entity.creature.animal.Predator;
 import simulation.entity.resource.Grass;
@@ -15,12 +16,9 @@ public class MovementController {
     }
 
     public void moveEntity(Entity entity, Position newPosition) {
-
         if (isValidMove(newPosition)) {
-
+            System.out.println(entity.getSymbol() + ": move to " + newPosition.getX() + ", " + newPosition.getY());
             gameMap.updateEntityPosition(entity, newPosition);
-            System.out.println(entity.getSymbol() + ": is move to " + newPosition);
-
         } else {
             handleInteraction(entity, newPosition);
         }
@@ -29,20 +27,32 @@ public class MovementController {
     private void handleInteraction(Entity entity, Position newPosition) {
         Entity target = gameMap.getEntityAt(newPosition);
 
-        if (entity instanceof Herbivore herbivore && target instanceof Grass grass && herbivore.isAlive()) {
-            herbivore.eatGrass(grass);
+        if (entity instanceof Herbivore herbivore) {
+            handleHerbivoreInteraction(herbivore, target, newPosition);
+
+        } else if (entity instanceof Predator predator) {
+            handlePredatorInteraction(predator, target, newPosition);
+
+        }
+    }
+
+    private void handleHerbivoreInteraction(Herbivore herbivore, Entity target, Position newPosition) {
+        if (target instanceof Grass && herbivore.isAlive()) {
             gameMap.removeEntity(newPosition);
+            System.out.println(herbivore.getSymbol() + ": ate grass");
+        }
+    }
 
-        } else if (entity instanceof Predator predator && target instanceof Herbivore herbivore) {
-            predator.attack(herbivore);
+    private void handlePredatorInteraction(Predator predator, Entity target, Position newPosition) {
+        if (target instanceof Attackable attackable) {
+            predator.attack(attackable);
 
-            if (!herbivore.isAlive()) {
+            if (target instanceof Herbivore herbivore && !herbivore.isAlive()) {
                 gameMap.removeEntity(newPosition);
-                System.out.println(predator.getSymbol() + " is killed: " + herbivore.getSymbol());
-                // gameMap.updateEntityPosition(predator, newPosition); // Хищник занимает клетку жертвы после победы
             }
         }
     }
+
 
     private boolean isValidMove(Position newPosition) {
         return gameMap.isValidPosition(newPosition) && gameMap.getEntityAt(newPosition) == null;

@@ -2,6 +2,7 @@ package simulation.main;
 
 import simulation.controller.MovementController;
 import simulation.entity.Entity;
+import simulation.entity.creature.Creature;
 import simulation.entity.creature.animal.Herbivore;
 import simulation.entity.creature.animal.Predator;
 import simulation.entity.landscape.Rock;
@@ -23,62 +24,51 @@ public class TempMain {
 
     // todo разбить по классам/методам, переделать логику.
     private static void run(GameMap gameMap, MovementController movementController, int step) {
-        Position predatorPos1 = new Position(3, 4);
-        Position predatorPos2 = new Position(3, 2);
-        Position predatorPos3 = new Position(7, 9);
-        Predator predator1 = new Predator(1, 1, 1, predatorPos1);
-        Predator predator2 = new Predator(1, 1, 1, predatorPos2);
-        Predator predator3 = new Predator(1, 1, 1, predatorPos3);
+        Creature predator1 = new Predator(1, 1, 1, 3, 4);
+        Creature predator2 = new Predator(1, 1, 1, 3,2);
+        Creature predator3 = new Predator(1, 1, 1, 7,9);
 
-        Position herbivorePos1 = new Position(8, 5);
-        Position herbivorePos2 = new Position(1, 5);
-        Herbivore herbivore1 = new Herbivore(10, 1, herbivorePos1);
-        Herbivore herbivore2 = new Herbivore(10, 1, herbivorePos2);
+        Creature herbivore1 = new Herbivore(1, 1, 8,5);
+        Creature herbivore2 = new Herbivore(1, 1, 1,5);
 
-        Position treePos = new Position(4, 6);
-        Entity tree = new Tree(treePos);
+        Entity tree = new Tree(4,6);
 
-        Position grassPos1 = new Position(0, 9);
-        Position grassPos2 = new Position(9, 3);
-        Position grassPos3 = new Position(4, 8);
-        Entity grass1 = new Grass(grassPos1);
-        Entity grass2 = new Grass(grassPos2);
-        Entity grass3 = new Grass(grassPos3);
+        Entity grass1 = new Grass(1,7);
+        Entity grass2 = new Grass(9,3);
+        Entity grass3 = new Grass(4,8);
 
-        Position rockPos1 = new Position(5, 7);
-        Position rockPos2 = new Position(1, 4);
-        Position rockPos3 = new Position(0, 0);
-        Entity rock1 = new Rock(rockPos1);
-        Entity rock2 = new Rock(rockPos2);
-        Entity rock3 = new Rock(rockPos3);
+        Entity rock1 = new Rock(5,7);
+        Entity rock2 = new Rock(1,4);
+        Entity rock3 = new Rock(0,0);
 
-        gameMap.addEntity(predatorPos1, predator1);
-        gameMap.addEntity(predatorPos2, predator2);
-        gameMap.addEntity(predatorPos3, predator3);
+        gameMap.addEntity(predator1.getPosition(), predator1);
+        gameMap.addEntity(predator2.getPosition(), predator2);
+        gameMap.addEntity(predator3.getPosition(), predator3);
 
-        gameMap.addEntity(herbivorePos1, herbivore1);
-        gameMap.addEntity(herbivorePos2, herbivore2);
+        gameMap.addEntity(herbivore1.getPosition(), herbivore1);
+        gameMap.addEntity(herbivore2.getPosition(), herbivore2);
 
-        gameMap.addEntity(treePos, tree);
+        gameMap.addEntity(tree.getPosition(), tree);
 
-        gameMap.addEntity(rockPos1, rock1);
-        gameMap.addEntity(rockPos2, rock2);
-        gameMap.addEntity(rockPos3, rock3);
+        gameMap.addEntity(rock1.getPosition(), rock1);
+        gameMap.addEntity(rock2.getPosition(), rock2);
+        gameMap.addEntity(rock3.getPosition(), rock3);
 
-        gameMap.addEntity(grassPos1, grass1);
-        gameMap.addEntity(grassPos2, grass2);
-        gameMap.addEntity(grassPos3, grass3);
+        gameMap.addEntity(grass1.getPosition(), grass1);
+        gameMap.addEntity(grass2.getPosition(), grass2);
+        gameMap.addEntity(grass3.getPosition(), grass3);
 
         gameMap.displayMap();
+        System.out.println("==============================");
 
         for (int i = 0; i < step; i++) {
 
-            List<Position> predatorList1 = predator1.searchTarget(movementController);
-            List<Position> predatorList2 = predator2.searchTarget(movementController);
-            List<Position> predatorList3 = predator3.searchTarget(movementController);
+            List<Position> predatorList1 = predator1.findTarget(movementController);
+            List<Position> predatorList2 = predator2.findTarget(movementController);
+            List<Position> predatorList3 = predator3.findTarget(movementController);
 
-            List<Position> herbivoreList1 = herbivore1.searchTarget(movementController);
-            List<Position> herbivoreList2 = herbivore2.searchTarget(movementController);
+            List<Position> herbivoreList1 = herbivore1.findTarget(movementController);
+            List<Position> herbivoreList2 = herbivore2.findTarget(movementController);
 
             if ((predatorList1 != null && !predatorList1.isEmpty()
                     || herbivoreList1 != null && !herbivoreList1.isEmpty())
@@ -97,6 +87,8 @@ public class TempMain {
                 predator3.makeMove(predatorList3, movementController);
 
                 gameMap.displayMap();
+
+                System.out.println("==============================");
             }
         }
     }
