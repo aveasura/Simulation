@@ -19,15 +19,20 @@ public class SimulationManager {
     private final MovementController movementController;
     private final DisplayController displayController;
     private final EntityManager entityManager;
+    private final InputManager inputManager;
 
-    public SimulationManager(GameMap gameMap, MovementController movementController, DisplayController displayController, EntityManager entityManager) {
+    public SimulationManager(GameMap gameMap, MovementController movementController, DisplayController displayController,
+                             EntityManager entityManager, InputManager inputManager) {
         this.gameMap = gameMap;
         this.movementController = movementController;
         this.displayController = displayController;
         this.entityManager = entityManager;
+        this.inputManager = inputManager;
     }
 
-    public void startSimulation(int numberOfRandomEntities) {
+    public void startSimulation() {
+        System.out.println("Enter the number of entities to place on the map.");
+        int numberOfRandomEntities = inputManager.readInt();
 
         if (!isSpaceAvailable(numberOfRandomEntities)) {
             displayController.printNoSpaceAvailable();
@@ -55,6 +60,9 @@ public class SimulationManager {
         displayController.displayMap(gameMap);
         printMissingEntities(creatures, staticEntities);
         displayController.printSimulationIsOver(stepCounter);
+
+        // Ожидание нажатия enter перед закрытием приложения.
+        inputManager.readLine();
     }
 
     private boolean moveCreatures(List<Creature> creatures) {
