@@ -31,6 +31,7 @@ public class SimulationManager {
     }
 
     public void startSimulation() {
+        displayController.cleanConsole();
         System.out.println("Enter the number of entities to place on the map.");
         int numberOfRandomEntities = inputManager.readInt();
 
