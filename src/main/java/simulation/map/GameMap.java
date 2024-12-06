@@ -42,39 +42,15 @@ public class GameMap {
                 newPosition.getY() >= 0 && newPosition.getY() < height;
     }
 
-    public void displayMap() {
-        printBorder(3);
-
-        Position position = new Position(0, 0);
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                position.setCoordinates(x, y);
-                if (grid.containsKey(position)) {
-                    Entity entity = grid.get(position);
-                    System.out.print(entity.getEntitySymbol() + "  ");
-                } else {
-                    System.out.print(".  ");
-                }
-            }
-            System.out.println();
-        }
-
-        printBorder(3);
-    }
-
-    private void printBorder(int size) {
-        System.out.println("=".repeat(height * size));
-    }
-
-    public Map<Position, Entity> getGrid() {
-        return Collections.unmodifiableMap(grid);
-    }
-
     public int getWidth() {
         return width;
     }
 
     public int getHeight() {
         return height;
+    }
+
+    public Map<Position, Entity> getGrid() {
+        return Collections.unmodifiableMap(grid);
     }
 }
