@@ -77,6 +77,6 @@ public class DisplayController {
     }
 
     public void printSimulationIsOver(int stepCounter) {
-        printMessage("Game is over. Number of steps: " + stepCounter);
+        printMessage("Game is over. Number of steps: " + stepCounter + "\nPress Enter to exit...");
     }
 }
