@@ -14,7 +14,20 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+
+        <dependency>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.5.0</version>
+        </dependency>
+
+    </dependencies>
+
     <build>
+        <!--Название jar файла после сборки-->
+        <finalName>SimulationV1</finalName>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -29,6 +42,6 @@
                 </configuration>
             </plugin>
         </plugins>
-    </build>
 
+    </build>
 </project>
