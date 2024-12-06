@@ -6,6 +6,8 @@ import simulation.manager.EntityManager;
 import simulation.manager.SimulationManager;
 import simulation.map.GameMap;
 
+import java.util.Scanner;
+
 
 public class Simulation {
 
@@ -19,5 +21,9 @@ public class Simulation {
                 new SimulationManager(gameMap, movementController, displayController, entityManager);
 
         simulationManager.startSimulation(20);
+
+        // Ожидание нажатия клавиши перед закрытием
+        System.out.println("Press Enter to exit...");
+        new Scanner(System.in).nextLine();
     }
 }

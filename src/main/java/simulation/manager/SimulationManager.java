@@ -51,8 +51,10 @@ public class SimulationManager {
             sleep(1000);
         }
 
-        displayController.printSimulationIsOver(stepCounter);
+        displayController.cleanConsole();
         displayController.displayMap(gameMap);
+        printMissingEntities(creatures, staticEntities);
+        displayController.printSimulationIsOver(stepCounter);
     }
 
     private boolean moveCreatures(List<Creature> creatures) {
@@ -72,6 +74,10 @@ public class SimulationManager {
 
     private boolean simulationIsRunning(List<Creature> creatures, List<Entity> staticEntities) {
         // Проверка живых травоядных, хищников и наличия травы
+        return checkMissingEntities(creatures, staticEntities); // просто проверяем на наличие всех сущностей
+    }
+
+    private boolean checkMissingEntities(List<Creature> creatures, List<Entity> staticEntities) {
         boolean hasHerbivores = creatures.stream().anyMatch(creature -> creature instanceof Herbivore && creature.isExist());
         boolean hasPredators = creatures.stream().anyMatch(creature -> creature instanceof Predator && creature.isExist());
         boolean hasGrass = staticEntities.stream().anyMatch(entity -> entity instanceof Grass && entity.isExist());
@@ -79,6 +85,11 @@ public class SimulationManager {
         // Игра заканчивается, если хотя бы одного вида нет
         displayController.printMissingEntities(hasHerbivores, hasPredators, hasGrass);
         return hasHerbivores && hasPredators && hasGrass;
+    }
+
+    // Вынес метод для вывода информации о недостающих сущностях
+    private void printMissingEntities(List<Creature> creatures, List<Entity> staticEntities) {
+        checkMissingEntities(creatures, staticEntities); // просто вызываем один и тот же метод для вывода информации
     }
 
     private boolean isSpaceAvailable(int numberOfEntities) {
@@ -90,7 +101,8 @@ public class SimulationManager {
         try {
             Thread.sleep(ms);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Error when trying to sleep", e);
         }
     }
 }

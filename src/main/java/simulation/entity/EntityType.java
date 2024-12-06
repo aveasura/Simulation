@@ -3,7 +3,7 @@ package simulation.entity;
 public enum EntityType {
     PREDATOR,
     HERBIVORE,
-    ROCK,
+    TREE,
     GRASS,
     MOUNTAIN
 }
