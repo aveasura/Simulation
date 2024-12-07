@@ -61,9 +61,6 @@ public class SimulationManager {
         displayController.displayMap(gameMap);
         printMissingEntities(creatures, staticEntities);
         displayController.printSimulationIsOver(stepCounter);
-
-        // Ожидание нажатия enter перед закрытием приложения.
-        inputManager.readLine();
     }
 
     private boolean moveCreatures(List<Creature> creatures) {
