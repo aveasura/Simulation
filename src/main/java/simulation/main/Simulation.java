@@ -20,5 +20,9 @@ public class Simulation {
                 new SimulationManager(gameMap, movementController, displayController, entityManager, inputManager);
 
         simulationManager.startSimulation();
+
+        // Ожидание нажатия enter перед закрытием приложения.
+        System.out.println("Press Enter to exit...");
+        inputManager.readLine();
     }
 }
